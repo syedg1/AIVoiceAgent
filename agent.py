@@ -7,8 +7,8 @@ from livekit.plugins import (
     noise_cancellation,
 )
 from livekit.plugins import google
-from prompts import AGENT_INSTRUCTIONS, SESSION_INSTRUCTIONS, SESSION_INSTRUCTIONS_TEST
-from tools import validate_address, send_confirmation_email
+from prompts import AGENT_INSTRUCTIONS, SESSION_INSTRUCTIONS
+from tools import validate_address, send_confirmation_email, end_call, get_current_date
 
 load_dotenv()
 
@@ -19,7 +19,9 @@ class Assistant(Agent):
             instructions=AGENT_INSTRUCTIONS,
             tools=[
                 validate_address,
-                send_confirmation_email
+                send_confirmation_email,
+                get_current_date,
+                end_call
             ]
         )
 
@@ -35,9 +37,6 @@ async def entrypoint(ctx: agents.JobContext):
         room=ctx.room,
         agent=Assistant(),
         room_input_options=RoomInputOptions(
-            # LiveKit Cloud enhanced noise cancellation
-            # - If self-hosting, omit this parameter
-            # - For telephony applications, use `BVCTelephony` for best results
             noise_cancellation=noise_cancellation.BVCTelephony(),
         ),
     )

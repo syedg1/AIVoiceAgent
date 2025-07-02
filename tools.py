@@ -4,10 +4,12 @@ import logging
 import smtplib
 
 from dotenv import load_dotenv
+from livekit import api
 from livekit.agents import function_tool, RunContext
 from textwrap import dedent
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from datetime import datetime
 
 load_dotenv()
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
@@ -122,4 +124,39 @@ async def send_confirmation_email(
         logging.error(f'Error sending email: {e}')
         return f'An error occurred while sending email: {str(e)}'
     
+@function_tool
+def get_current_date(context: RunContext):
+    now = datetime.now()
+    day = now.day
+    return now.strftime(f"%A, %B {day}, %Y")
+
+@function_tool
+async def end_call(context: RunContext):
+    """
+    End the call with the user
+    """
+    # let the agent finish speaking
+    current_speech = context.session.current_speech
+    if current_speech:
+        logging.info('Awaiting current speech to complete')
+        await current_speech.wait_for_playout()
+
+    logging.info('Ending the call')
+    await hangup_call(context)
+
+
+async def hangup_call(context: RunContext):
+    if context is None:
+        logging.error('Failed to end the call: No context found')
+        return
+
+    try:
+        await context.api.room.delete_room(
+            api.DeleteRoomRequest(
+                room=context.room.name,
+            )
+        )
+        logging.info(f'Successfully ended room: {context.room.name}')
+    except Exception as e:
+        logging.error(f'Failed to end the call: {e}')    
         
