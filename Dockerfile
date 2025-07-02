@@ -1,6 +1,6 @@
 # This is an example Dockerfile that builds a minimal container for running LK Agents
 # syntax=docker/dockerfile:1
-ARG PYTHON_VERSION=3.13
+ARG PYTHON_VERSION=3.11
 FROM python:${PYTHON_VERSION}-slim
 
 # Keeps Python from buffering stdout and stderr to avoid situations where
@@ -9,6 +9,7 @@ ENV PYTHONUNBUFFERED=1
 
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
+
 ARG UID=10001
 RUN adduser \
     --disabled-password \
