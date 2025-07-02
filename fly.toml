@@ -1,4 +1,4 @@
-app = 'ai-voice-agent'
+app = 'ai-voice-agent-assort-health'
 primary_region = 'iad'
 
 # As of now, the maximum kill_timeout on fly.io is 5 minutes. After
