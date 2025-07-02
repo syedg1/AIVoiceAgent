@@ -1,0 +1,9 @@
+{
+  "name": "Twilio Inbound Trunk",
+  "trunk_ids": ["ST_LD6DBRCihCjy"],
+  "rule": {
+    "dispatchRuleIndividual": {
+      "roomPrefix": "call-"
+    }
+  }
+}
