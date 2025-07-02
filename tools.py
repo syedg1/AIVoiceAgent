@@ -45,8 +45,8 @@ async def validate_address(
 
         if response.status_code == 200:
             if 'hasUnconfirmedComponents' in response_body and response_body['hasUnconfirmedComponents']:
-                logging.info(f'unconfirmed address components: {response_body['unconfirmedComponentTypes']}')
-                return f'the following components could not be validated: {response_body['unconfirmedComponentTypes']}'
+                logging.info(f"unconfirmed address components: {response_body['unconfirmedComponentTypes']}")
+                return f"the following components could not be validated: {response_body['unconfirmedComponentTypes']}"
             return response_body
         else:
             logging.error('failed to validate address')
