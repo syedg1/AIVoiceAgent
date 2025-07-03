@@ -25,6 +25,16 @@ kill_timeout = "300s"
   # so we use a bluegreen strategy. 
   strategy = "bluegreen"
 
+[[services]]
+  internal_port = 8081
+  protocol = "tcp"
+  auto_stop_machines = "off"
+  auto_start_machines = false
+  min_machines_running = 1
+    
+  [[services.ports]]
+    port = 8081
+
 # A check if required for the bluegreen deployment strategy.
 [[checks]]
 name = "healthcheck"
